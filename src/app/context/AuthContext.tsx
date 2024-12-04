@@ -13,8 +13,8 @@ const AuthContext = createContext<{
 });
 
 import { ReactNode } from "react";
-import User from '../interfaces/user'
-import { deleteUser, getAuth } from 'firebase/auth'
+import User from "../interfaces/user";
+import { deleteUser, getAuth } from "firebase/auth";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -27,19 +27,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const loginEfetuado = async (userId: string, token: string) => {
     try {
-      const response = await fetch(`https://api-dkviu3xq7a-uc.a.run.app/user?userId=${userId}`);
+      const response = await fetch(
+        `https://api-dkviu3xq7a-uc.a.run.app/user?userId=${userId}`
+      );
       const userData = await response.json();
-      console.log('response', response.status)
-      if(response.status === 404) {
+      console.log("response", response.status);
+      if (response.status === 404) {
         excluirUsuarioAuth();
       }
       setUser(userData);
     } catch (error: any) {
-      console.error('Erro ao buscar usuário:', error);
-      
+      console.error("Erro ao buscar usuário:", error);
     }
-    
-    
   };
 
   const excluirUsuarioAuth = async () => {
@@ -48,9 +47,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         await deleteUser(userFirebase);
       }
     } catch (error) {
-      console.error('Erro ao excluir usuário:', error);
+      console.error("Erro ao excluir usuário:", error);
     }
-   }
+  };
 
   const logout = () => {
     setUser(null);
@@ -67,4 +66,4 @@ export function AuthProvider({ children }: AuthProviderProps) {
   );
 }
 
-export const useAuth= () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);

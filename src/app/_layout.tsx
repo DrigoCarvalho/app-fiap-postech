@@ -14,12 +14,18 @@ export default function Layout() {
             fontWeight: "bold",
           },
         }}
-        initialRouteName='(tabs)'
+        initialRouteName="(tabs)"
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }}/>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="screens/login" options={{ title: "Login" }} />
-        <Stack.Screen name="screens/DetailPost" options={{ title: "Detalhe de post" }} />
-        <Stack.Screen name="screens/ManageUser" options={{ title: "Gerenciar usuário" }} />
+        <Stack.Screen
+          name="screens/DetailPost"
+          options={{ title: "Detalhe de post" }}
+        />
+        <Stack.Screen
+          name="screens/ManageUser"
+          options={{ title: "Gerenciar usuário" }}
+        />
       </Stack>
     </AuthProvider>
   );

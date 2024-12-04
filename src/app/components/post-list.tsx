@@ -31,7 +31,7 @@ const PostList = () => {
   const handleDelete = (id: string) => {
     Alert.alert(
       "Confirmação de Exclusão",
-      "Tem certeza que deseja excluir esse post? Será excluído em segundo plano",
+      "Tem certeza que deseja excluir esse post?",
       [
         {
           text: "Cancelar",
@@ -67,7 +67,7 @@ const PostList = () => {
       const postsData = await getAllPosts();
       setPosts(postsData);
     } catch (error) {
-      console.error("Error fetching posts:", error);
+      Alert.alert("Erro ao carregar posts");
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -87,7 +87,7 @@ const PostList = () => {
     <View style={styles.container}>
       <TextInput
         style={styles.searchInput}
-        placeholder="Search posts..."
+        placeholder="Pesquise posts..."
         value={search}
         onChangeText={setSearch}
       />

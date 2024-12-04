@@ -1,36 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
-import { createPost, updatePost } from '../../services/post'
-import { useAuth } from '../../context/AuthContext'
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { createPost, updatePost } from "../../services/post";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ManagePost() {
   const { user: authUser } = useAuth();
   const router = useRouter();
   const params = useLocalSearchParams();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [postId, setPostId] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [postId, setPostId] = useState("");
   const [loading, setLoading] = useState(false);
   const isEdit = params.id !== undefined;
-  const navigation = useNavigation();
 
   useEffect(() => {
     if (isEdit) {
-      // colocar tudo isso como as string
-      setPostId(Array.isArray(params.id) ? params.id[0] : params.id || '');
-      setTitle(Array.isArray(params.title) ? params.title[0] : params.title || '');
-      setContent(Array.isArray(params.description) ? params.description[0] : params.description || '');
+      setPostId(params.id as string);
+      setTitle(params.title as string);
+      setContent(params.description as string);
     }
     return () => {
-      setTitle('');
-      setContent('');
+      setTitle("");
+      setContent("");
     };
   }, [isEdit, params.id]);
 
   const handleSubmit = async () => {
     setLoading(true);
-    const author = authUser?.name || 'Anonymous';
+    const author = authUser?.name || "Anonymous";
     try {
       if (isEdit) {
         await updatePost(postId, { title, author, description: content });
@@ -38,19 +44,19 @@ export default function ManagePost() {
         await createPost({ title, author, description: content });
       }
       Alert.alert(
-        'Success',
-        'The post has been successfully saved.',
+        "Successo",
+        "O post foi salvo com sucesso",
         [
           {
-            text: 'OK',
-            onPress: () => router.push({ pathname: '../(tabs)' }),
+            text: "OK",
+            onPress: () => router.push({ pathname: "../(tabs)" }),
           },
         ],
         { cancelable: false }
       );
     } catch (error) {
-      console.error('Error saving post:', error);
-      Alert.alert('Error', 'There was an error saving the post.');
+      console.error("Error saving post:", error);
+      Alert.alert("Erro", "Houve um erro ao salvar o post.");
     } finally {
       setLoading(false);
     }
@@ -58,14 +64,14 @@ export default function ManagePost() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Title</Text>
+      <Text style={styles.label}>Titulo</Text>
       <TextInput
         style={styles.input}
         value={title}
         onChangeText={setTitle}
         placeholder="Enter post title"
       />
-      <Text style={styles.label}>Content</Text>
+      <Text style={styles.label}>Conteúdo</Text>
       <TextInput
         style={styles.textArea}
         value={content}
@@ -76,7 +82,10 @@ export default function ManagePost() {
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <Button title={isEdit ? "Edit Post" : "Create Post"} onPress={handleSubmit} />
+        <Button
+          title={isEdit ? "Edit Post" : "Create Post"}
+          onPress={handleSubmit}
+        />
       )}
     </View>
   );
@@ -89,22 +98,22 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 8,
   },
   textArea: {
     height: 100,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 8,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
   },
 });

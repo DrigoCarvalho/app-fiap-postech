@@ -1,11 +1,11 @@
 import { Tabs } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from "../context/AuthContext";
 
 export default function Layout() {
   const { user: authUser } = useAuth();
-  const ehProfessor = authUser?.role === 'professor';
-  const ehAdmin = authUser?.role === 'admin';
+  const isProfessor = authUser?.role === "professor";
+  const isAdmin = authUser?.role === "admin";
   return (
     <Tabs>
       <Tabs.Screen
@@ -13,7 +13,7 @@ export default function Layout() {
         options={{
           title: "Home",
           headerShown: false,
-          href: ehAdmin ? "/(tabs)" : null,
+          href: isAdmin && isProfessor ? "/(tabs)" : null,
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome name="home" size={size} color={color} />
           ),
@@ -24,7 +24,7 @@ export default function Layout() {
         options={{
           title: "Criar Post",
           headerShown: false,
-          href: ehAdmin ? "/(tabs)/ManagePost" : null,
+          href: isAdmin && isProfessor ? "/(tabs)/ManagePost" : null,
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome name="plus-circle" size={size} color={color} />
           ),
@@ -35,7 +35,7 @@ export default function Layout() {
         options={{
           title: "Admin",
           headerShown: false,
-          href: ehAdmin ? "/(tabs)/Admin" : null,
+          href: isAdmin && isProfessor ? "/(tabs)/Admin" : null,
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome name="gear" size={size} color={color} />
           ),

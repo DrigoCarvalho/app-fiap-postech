@@ -11,7 +11,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
-import { app, auth } from '../../../firebaseConfig';
+import { app, auth } from "../../../firebaseConfig";
 
 export default function Login() {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -22,30 +22,26 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const userId = userCredential.user.uid;
-      console.log('user id', userId);
-      
-      authFirebase.onAuthStateChanged(user => {
+
+      authFirebase.onAuthStateChanged((user) => {
         if (user) {
-          
-          user.getIdToken(true).then(token => {
-            
-            console.log("Token de autenticação:", token);
+          user.getIdToken(true).then((token) => {
             loginEfetuado(userId, token);
           });
         }
       });
-      
+
       navigation.navigate("(tabs)");
     } catch (error: any) {
-      Alert.alert("Erro", error.message);
+      Alert.alert("Erro", 'Email ou senha inválidos');
     }
-  }
-
-  
-  
-  
+  };
 
   return (
     <View style={styles.container}>

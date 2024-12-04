@@ -1,41 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { createUser, updateUser } from '../services/user'
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
-import { useAuth } from '../context/AuthContext'
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { createUser, updateUser } from "../services/user";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { useAuth } from "../context/AuthContext";
 
 export default function ManageUser() {
   let params = useLocalSearchParams();
   const auth = getAuth();
   const { user: authUser } = useAuth();
   const router = useRouter();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState('estudante');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [userId, setUserId] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("estudante");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const isEdit = params.id !== undefined;
-  const isAdmin = authUser?.role === 'admin';
+  const isAdmin = authUser?.role === "admin";
 
   useEffect(() => {
     if (isEdit) {
-      setUserId(Array.isArray(params.id) ? params.id[0] : params.id || '');
-      setName(Array.isArray(params.name) ? params.name[0] : params.name || '');
-      setEmail(Array.isArray(params.email) ? params.email[0] : params.email || '');
-      setRole(Array.isArray(params.role) ? params.role[0] : params.role || 'estudante');
+      setUserId(params.id as string);
+      setName(params.name as string);
+      setEmail(params.email as string);
+      setRole(params.role as string);
     }
     return () => {
-      setName('');
-      setEmail('');
-      setRole('estudante');
-      setPassword('');
-      setConfirmPassword('');
+      setName("");
+      setEmail("");
+      setRole("estudante");
+      setPassword("");
+      setConfirmPassword("");
     };
-    
   }, [isEdit, params.id]);
 
   const isFormValid = () => {
@@ -46,36 +53,39 @@ export default function ManageUser() {
 
   const handleSave = async () => {
     setLoading(true);
-    try{
-      if(isEdit){
-        await updateUser(userId, { name, email, role});
+    try {
+      if (isEdit) {
+        await updateUser(userId, { name, email, role });
       } else {
         try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const user = userCredential.user?.uid || '';
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const user = userCredential.user?.uid || "";
           await createUser({ id: user, name, email, role });
         } catch (error) {
           throw error;
         }
       }
       Alert.alert(
-        'Success',
-        'The user has been successfully saved.',
+        "Successo",
+        "O usuário foi salvo com sucesso",
         [
           {
-            text: 'OK',
-            onPress: () => router.push({ pathname: '../(tabs)/Admin' }),
+            text: "OK",
+            onPress: () => router.push({ pathname: "../(tabs)/Admin" }),
           },
         ],
         { cancelable: false }
       );
     } catch (error) {
-      console.error('Error saving user:', error);
-      Alert.alert('Error', 'There was an error saving the user.');
+      console.error("Error ao salvar user:", error);
+      Alert.alert("Error", "Houve um erro ao salvar o usuário.");
     } finally {
       setLoading(false);
     }
-    
   };
 
   return (
@@ -128,8 +138,11 @@ export default function ManageUser() {
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <Button title={isEdit ? "editar usuário" : "criar usuário"} onPress={handleSave}
-        disabled={!isFormValid()} />
+        <Button
+          title={isEdit ? "editar usuário" : "criar usuário"}
+          onPress={handleSave}
+          disabled={!isFormValid()}
+        />
       )}
     </View>
   );
@@ -139,18 +152,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginVertical: 8,
   },
   input: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 10,
     borderRadius: 8,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     marginBottom: 16,
   },

@@ -12,32 +12,10 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { deleteUserFirebase, getAllUsers } from '../../services/user'
-import { getAuth, deleteUser } from "firebase/auth";
-import { auth } from '@/firebaseConfig'
-import { useAuth } from '../../context/AuthContext'
-import User from '../../interfaces/user'
+import { deleteUserFirebase, getAllUsers } from "../../services/user";
+import User from "../../interfaces/user";
 
 export default function Admin() {
-  const testeUser = {
-    uid: '',
-    providerId: '',
-    email: '',
-    displayName: '',
-    photoURL: '',
-    emailVerified: false,
-    phoneNumber: '',
-    isAnonymous: false,
-    metadata: { creationTime: '', lastSignInTime: '' },
-    providerData: [],
-    refreshToken: '',
-    tenantId: '',
-    delete: async () => {},
-    getIdToken: async (forceRefresh?: boolean) => '',
-    getIdTokenResult: async (forceRefresh?: boolean) => ({ token: '', expirationTime: '', authTime: '', issuedAtTime: '', signInProvider: '', claims: {}, signInSecondFactor: null }),
-    reload: async () => {},
-    toJSON: () => ({}),
-  }
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [filterRole, setFilterRole] = useState("");
@@ -62,38 +40,37 @@ export default function Admin() {
 
   const handleEdit = (user: User) => {
     router.push({
-        pathname: "../screens/ManageUser",
-        params: { ...user },
-      });
+      pathname: "../screens/ManageUser",
+      params: { ...user },
+    });
   };
 
   const handleDelete = (id: string) => {
     Alert.alert(
-        'Confirmação de Exclusão',
-        'Tem certeza que deseja excluir esse usuário?',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
+      "Confirmação de Exclusão",
+      "Tem certeza que deseja excluir esse usuário?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Sim",
+          onPress: () => {
+            deleteUserAsync(id);
           },
-          {
-            text: 'Sim',
-            onPress: () => {
-              deleteUserAsync(id);
-            },
-          },
-        ],
-        { cancelable: false }
-      );
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   const deleteUserAsync = async (id: string) => {
-    
     try {
       setUsers(users.filter((user) => user.id !== id));
       await deleteUserFirebase(id);
     } catch (error: any) {
-      Alert.alert("Erro ao excluir post", error.message);
+      Alert.alert("Erro ao excluir usuário", error.message);
     }
   };
 
@@ -101,32 +78,31 @@ export default function Admin() {
     ? users.filter((user) => user.role === filterRole)
     : users;
 
-    const fetchUsers = async () => {
-      setLoading(true);
-      try {
-        const usersData = await getAllUsers();
-        setUsers(usersData);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      } finally {
-        setLoading(false);
-        setRefreshing(false);
-      }
-    };
-  
-    useEffect(() => {
-      fetchUsers();
-    }, []);
-  
-    const onRefresh = () => {
-      setRefreshing(true);
-      fetchUsers();
-    };
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const usersData = await getAllUsers();
+      setUsers(usersData);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchUsers();
+  };
 
   return (
     <View style={styles.container}>
       <Button
-        title="Criar Novo Usuário"
+        title="Criar novo usuário"
         onPress={() => {
           router.push({
             pathname: "../screens/ManageUser",
@@ -168,8 +144,7 @@ export default function Admin() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
-
-       )}
+      )}
     </View>
   );
 }
