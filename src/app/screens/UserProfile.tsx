@@ -7,10 +7,6 @@ export default function UserProfile() {
   const { user: authUser, logout } = useAuth();
   const router = useRouter();
 
-  const handleChangePassword = () => {
-    router.push({ pathname: "./ChangePassword" });
-  };
-
   const handleLogout = () => {
     logout();
     router.push({ pathname: "../(tabs)" });
@@ -25,9 +21,6 @@ export default function UserProfile() {
       <Text style={styles.value}>{authUser?.email}</Text>
       <Text style={styles.label}>Role:</Text>
       <Text style={styles.value}>{authUser?.role}</Text>
-      <View style={styles.buttonContainer}>
-        <Button title="Trocar Senha" onPress={handleChangePassword} />
-      </View>
       <View style={styles.buttonContainer}>
         <Button color={'#ee2400'} title="Logout" onPress={handleLogout} />
       </View>
