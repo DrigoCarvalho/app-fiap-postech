@@ -37,6 +37,7 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 - Ter o Node e npm instalados
 - Ter uma IDE instalada como VsCode
 - Ter o app do expo instalado no celular ou emuladores
+- IMPORTANTE será necessário incluir o arquivo fireBaseConfig.js na raiz do projeto, para conseguir rodar localmente, está disponível no drive
 
 ## 🚀 Instalando FIAP Blog App
 
