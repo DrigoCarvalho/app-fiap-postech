@@ -83,7 +83,7 @@ export default function ManagePost() {
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <Button
-          title={isEdit ? "Edit Post" : "Create Post"}
+          title={isEdit ? "Editar Post" : "Criar Post"}
           onPress={handleSubmit}
         />
       )}
@@ -107,13 +107,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 8,
+    borderRadius: 10,
   },
   textArea: {
-    height: 100,
+    height: 400,
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 8,
     textAlignVertical: "top",
+    borderRadius: 10,
   },
 });

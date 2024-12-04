@@ -7,6 +7,9 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -89,62 +92,69 @@ export default function ManageUser() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Nome</Text>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
-        placeholder="Nome"
-      />
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        keyboardType="email-address"
-      />
-      <Text style={styles.label}>Role</Text>
-      <Picker
-        selectedValue={role}
-        style={styles.input}
-        onValueChange={(itemValue) => setRole(itemValue)}
-      >
-        <Picker.Item label="Professor" value="professor" />
-        <Picker.Item label="Estudante" value="estudante" />
-        {isAdmin && <Picker.Item label="Admin" value="admin" />}
-      </Picker>
-      {!isEdit && (
-        <>
-          <Text style={styles.label}>Senha</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.container}>
+          <Text style={styles.label}>Nome</Text>
           <TextInput
             style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-            placeholder="Senha"
-            secureTextEntry
+            value={name}
+            onChangeText={setName}
+            placeholder="Nome"
           />
-          <Text style={styles.label}>Confirmar Senha</Text>
+          <Text style={styles.label}>Email</Text>
           <TextInput
             style={styles.input}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            placeholder="Confirmar Senha"
-            secureTextEntry
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Email"
+            keyboardType="email-address"
           />
-        </>
-      )}
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <Button
-          title={isEdit ? "editar usuário" : "criar usuário"}
-          onPress={handleSave}
-          disabled={!isFormValid()}
-        />
-      )}
-    </View>
+          <Text style={styles.label}>Role</Text>
+          <Picker
+            selectedValue={role}
+            style={styles.input}
+            onValueChange={(itemValue) => setRole(itemValue)}
+          >
+            <Picker.Item label="Professor" value="professor" />
+            <Picker.Item label="Estudante" value="estudante" />
+            {isAdmin && <Picker.Item label="Admin" value="admin" />}
+          </Picker>
+          {!isEdit && (
+            <>
+              <Text style={styles.label}>Senha</Text>
+              <TextInput
+                style={styles.input}
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Senha"
+                secureTextEntry
+              />
+              <Text style={styles.label}>Confirmar Senha</Text>
+              <TextInput
+                style={styles.input}
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                placeholder="Confirmar Senha"
+                secureTextEntry
+              />
+            </>
+          )}
+          {loading ? (
+            <ActivityIndicator size="large" color="#0000ff" />
+          ) : (
+            <Button
+              title={isEdit ? "editar usuário" : "criar usuário"}
+              onPress={handleSave}
+              disabled={!isFormValid()}
+            />
+          )}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -166,5 +176,10 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     marginBottom: 16,
+  },
+  scrollView: {
+    flexGrow: 1,
+    justifyContent: "center",
+    padding: 20,
   },
 });

@@ -13,7 +13,7 @@ export default function Layout() {
         options={{
           title: "Home",
           headerShown: false,
-          href: isAdmin && isProfessor ? "/(tabs)" : null,
+          href: (isAdmin || isProfessor) ? "/(tabs)" : null,
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome name="home" size={size} color={color} />
           ),
@@ -24,7 +24,7 @@ export default function Layout() {
         options={{
           title: "Criar Post",
           headerShown: false,
-          href: isAdmin && isProfessor ? "/(tabs)/ManagePost" : null,
+          href: (isAdmin || isProfessor) ? "/(tabs)/ManagePost" : null,
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome name="plus-circle" size={size} color={color} />
           ),
@@ -35,7 +35,7 @@ export default function Layout() {
         options={{
           title: "Admin",
           headerShown: false,
-          href: isAdmin && isProfessor ? "/(tabs)/Admin" : null,
+          href: (isAdmin || isProfessor) ? "/(tabs)/Admin" : null,
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome name="gear" size={size} color={color} />
           ),

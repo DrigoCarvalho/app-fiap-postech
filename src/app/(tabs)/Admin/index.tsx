@@ -170,8 +170,9 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     marginTop: 8,
+    gap: 12
   },
   filterContainer: {
     flexDirection: "row",

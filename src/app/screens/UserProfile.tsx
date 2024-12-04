@@ -29,7 +29,7 @@ export default function UserProfile() {
         <Button title="Trocar Senha" onPress={handleChangePassword} />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Logout" onPress={handleLogout} />
+        <Button color={'#ee2400'} title="Logout" onPress={handleLogout} />
       </View>
     </View>
   );
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginBottom: 10,
-    borderRadius: 8,
+    borderRadius: 12,
   },
 });

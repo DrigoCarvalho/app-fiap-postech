@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     marginBottom: 8,
-    gap: 8,
+    gap: 12,
   },
   title: {
     fontSize: 24,

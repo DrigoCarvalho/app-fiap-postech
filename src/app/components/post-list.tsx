@@ -117,7 +117,7 @@ const PostList = () => {
                   Ler mais
                 </Link>
                 {authUser?.role === "admin" && (
-                  <>
+                  <View style={styles.actionsIcons}>
                     <TouchableOpacity onPress={() => handleEdit(item)}>
                       <FontAwesome name="pencil" size={24} color="black" />
                     </TouchableOpacity>
@@ -126,7 +126,7 @@ const PostList = () => {
                     >
                       <FontAwesome name="trash" size={24} color="black" />
                     </TouchableOpacity>
-                  </>
+                  </View>
                 )}
               </View>
             </View>
@@ -187,6 +187,10 @@ const styles = StyleSheet.create({
   readMore: {
     color: "#1e90ff",
   },
+  actionsIcons: {
+    flexDirection: "row",
+    gap: 12,
+  }
 });
 
 export default PostList;

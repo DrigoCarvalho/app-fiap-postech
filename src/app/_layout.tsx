@@ -26,6 +26,10 @@ export default function Layout() {
           name="screens/ManageUser"
           options={{ title: "Gerenciar usuário" }}
         />
+        <Stack.Screen
+          name="screens/UserProfile"
+          options={{ title: "Perfil" }}
+        />
       </Stack>
     </AuthProvider>
   );

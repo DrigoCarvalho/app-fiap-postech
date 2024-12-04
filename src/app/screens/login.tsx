@@ -3,9 +3,10 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
   Alert,
+  ActivityIndicator,
+  Button,
 } from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -18,9 +19,11 @@ export default function Login() {
   const { loginEfetuado } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const authFirebase = getAuth(app);
+  const [userId, setUserId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -28,18 +31,13 @@ export default function Login() {
         password
       );
       const userId = userCredential.user.uid;
-
-      authFirebase.onAuthStateChanged((user) => {
-        if (user) {
-          user.getIdToken(true).then((token) => {
-            loginEfetuado(userId, token);
-          });
-        }
-      });
+      await loginEfetuado(userId)
 
       navigation.navigate("(tabs)");
     } catch (error: any) {
       Alert.alert("Erro", 'Email ou senha inválidos');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,9 +59,14 @@ export default function Login() {
         value={password}
         onChangeText={setPassword}
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Entrar</Text>
-      </TouchableOpacity>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <Button
+          title={"Entrar"}
+          onPress={handleLogin}
+        />
+      )}
     </View>
   );
 }
